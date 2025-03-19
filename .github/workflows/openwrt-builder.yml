@@ -36,6 +36,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
+    - name: SSH connection to Actions
+      uses: P3TERX/debugger-action@master
+      
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
