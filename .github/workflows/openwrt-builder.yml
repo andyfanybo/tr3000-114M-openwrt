@@ -72,6 +72,9 @@ jobs:
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
+      
+    - name: Setup Debug Session
+      uses: csexton/debugger-action@master
 
     - name: Load custom configuration
       run: |
