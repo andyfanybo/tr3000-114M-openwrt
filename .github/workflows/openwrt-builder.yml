@@ -72,9 +72,6 @@ jobs:
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
-      
-    - name: Setup Debug Session
-      uses: csexton/debugger-action@master
 
     - name: Load custom configuration
       run: |
@@ -84,6 +81,13 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
+    - name: SSH connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+      if: env.SSH_ACTIONS == 'true' || contains(github.event.action, 'ssh')
+      env:
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        
     - name: Download package
       id: package
       run: |
