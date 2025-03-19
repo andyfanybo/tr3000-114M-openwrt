@@ -18,7 +18,7 @@ on:
 
 env:
   REPO_URL: https://github.com/andyfanybo/openwrt_tr3000_114M
-  REPO_BRANCH: master
+  REPO_BRANCH: main
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
