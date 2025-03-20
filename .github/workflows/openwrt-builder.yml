@@ -179,7 +179,7 @@ jobs:
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         tag_name: ${{ env.tag_name }}
-        name: OpenWrt Release ${{ env.tag_name }}
+        name: cudy tr3000 OpenWrt Release ${{ env.tag_name }}
         body: |
           This is an automated release of OpenWrt firmware.
           - Branch: `${{ env.REPO_BRANCH }}`
