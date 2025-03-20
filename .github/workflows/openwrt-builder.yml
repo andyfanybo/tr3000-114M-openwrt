@@ -62,6 +62,9 @@ jobs:
       with:
         ccache: 'true'
         prefix: ${{ github.workspace }}/openwrt
+        restore-keys: |
+          ${{ runner.os }}-openwrt-
+        key: ${{ runner.os }}-openwrt-${{ github.sha }}
 
     - name: Load custom feeds
       run: |
@@ -104,14 +107,17 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j$(($(nproc) + 1)) || make -j1 || make -j1 V=s
+        make -j$(nproc) CCACHE=1 || make -j1 CCACHE=1 || make -j1 V=s CCACHE=1
         echo "status=success" >> $GITHUB_OUTPUT
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
 
     - name: Set Release Tag
-      run: echo "tag_name=OpenWrt_${{ env.REPO_BRANCH }}_${{ env.FILE_DATE }}" >> $GITHUB_ENV
+      run: |
+        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+        echo "TAG_NAME=OpenWrt_${{ env.REPO_BRANCH }}${{ env.FILE_DATE }}" >> $GITHUB_ENV
+
 
     - name: Check space usage
       if: (!cancelled())
@@ -119,7 +125,7 @@ jobs:
 
     - name: Upload bin directory
       uses: actions/upload-artifact@main
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+      if: always() && env.UPLOAD_BIN_DIR == 'true'
       with:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
@@ -138,9 +144,7 @@ jobs:
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
         name: OpenWrt_firmware
-        path: |
-            ${{ env.FIRMWARE }}
-            ${{ env.PACKAGED_OUTPUTPATH }} 
+        path: ${{ env.FIRMWARE }}/*
 
     - name: Create release
       uses: ncipollo/release-action@v1
@@ -163,9 +167,26 @@ jobs:
 
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@master
+      if: success() && env.UPLOAD_RELEASE == 'true'
+      with:
+        keep_latest: 5
+        delete_tags: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        keep_latest: 3
-        delete_tags: true
+        tag_name: ${{ env.tag_name }}
+        name: OpenWrt Release ${{ env.tag_name }}
+        body: |
+          This is an automated release of OpenWrt firmware.
+          - Branch: `${{ env.REPO_BRANCH }}`
+          - Date: `${{ env.FILE_DATE }}`
+        draft: false
+        prerelease: false
+        files: |
+          ${{ env.FIRMWARE }}/*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
