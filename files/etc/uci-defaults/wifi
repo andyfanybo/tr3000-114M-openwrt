@@ -1,0 +1,12 @@
+#!/bin/sh
+#Power By Qs315490
+
+# Wifi 设置
+for i in {0..2};do
+    if [ -e /sys/class/net/wlan$i ]
+    then
+        uci set wireless.radio${i}.country='AU'
+        uci del wireless.radio${i}.disabled
+    fi
+done
+uci commit

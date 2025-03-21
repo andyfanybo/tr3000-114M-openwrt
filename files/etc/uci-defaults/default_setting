@@ -1,0 +1,46 @@
+#!/bin/sh
+#Power By Qs315490
+
+system="system.@system[0]"
+
+[ "$(uci -q get $system.zonename)" = "Asia/Shanghai" ] && exit 0
+
+uci batch<<EOF
+	set $system.zonename='Asia/Shanghai'
+	set $system.timezone='CST-8'
+	commit
+EOF
+
+service network restart
+service system restart
+
+# 设置默认shell为bash
+#if [ -e /bin/bash ];then
+#	sed -i 's,/ash,/zsh,g' /etc/passwd
+#fi
+
+# 设置软件源为中科大
+sed -i 's_downloads.openwrt.org_mirrors.ustc.edu.cn/openwrt_' /etc/opkg/distfeeds.conf
+
+config="/etc/config"
+
+if [ -e $config/ttyd ];then
+	uci batch<<EOF
+	set ttyd.@ttyd[0].command='/bin/login -f root' # ttyd免登录
+	del ttyd.@ttyd[0].interface # 防止无法访问
+	commit
+EOF
+	service ttyd restart
+fi
+
+#if [ -e $config/upnpd ];then
+#	upnp="upnpd.config"
+#	uci batch<<EOF
+#	set $upnp.enabled='1'
+#	set $upnp.external_ip='223.5.5.5' # 跳过公网IP验证
+#	commit
+#EOF
+#	service miniupnpd restart
+#fi
+
+exit 0
