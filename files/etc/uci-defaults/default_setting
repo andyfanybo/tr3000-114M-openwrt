@@ -20,7 +20,7 @@ service system restart
 #fi
 
 # 设置软件源为中科大
-sed -i 's_downloads.openwrt.org_mirrors.ustc.edu.cn/openwrt_' /etc/opkg/distfeeds.conf
+# sed -i 's_downloads.openwrt.org_mirrors.ustc.edu.cn/openwrt_' /etc/opkg/distfeeds.conf
 
 config="/etc/config"
 
