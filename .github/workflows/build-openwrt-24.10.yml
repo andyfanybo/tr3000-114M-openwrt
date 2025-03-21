@@ -2,8 +2,8 @@ name: CUDY_TR3000_V1_114M_OP_2410
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 19 * * *
+  #schedule:
+  #  - cron: 0 19 * * *
 
 env:
   REPO_URL: https://github.com/openwrt/openwrt.git
@@ -124,6 +124,12 @@ jobs:
         cat package/base-files/files/bin/config_generate |grep 192
         echo -e "preset-terminal-tools.sh"
         $GITHUB_WORKSPACE/scripts/preset-terminal-tools.sh
+
+    - name: SSH connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+      env:
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }} 
 
     - name: Download DL Package
       run: |
