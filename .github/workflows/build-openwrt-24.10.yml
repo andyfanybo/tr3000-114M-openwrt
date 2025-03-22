@@ -6,8 +6,8 @@ on:
   #  - cron: 0 19 * * *
 
 env:
-  REPO_URL: https://github.com/openwrt/openwrt.git
-  REPO_BRANCH: openwrt-24.10
+  REPO_URL: https://github.com/padavanonly/immortalwrt-mt798x-24.10.git
+  REPO_BRANCH: 2410
   CONFIG_FILE: OpenWrt-OPKG-TR3000.config
   DIY_P1_SH: OpenWrt-part1.sh
   DIY_P2_SH: OpenWrt-part2.sh
