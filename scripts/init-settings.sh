@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Set default theme to luci-theme-argon
-uci set luci.main.mediaurlbase='/luci-static/argon'
-uci commit luci
+#uci set luci.main.mediaurlbase='/luci-static/argon'
+#uci commit luci
 
 # Disable IPV6 ula prefix
 # sed -i 's/^[^#].*option ula/#&/' /etc/config/network
@@ -11,4 +11,4 @@ uci commit luci
 # uci set fstab.@global[0].check_fs=1
 # uci commit fstab
 
-exit 0
+#exit 0
