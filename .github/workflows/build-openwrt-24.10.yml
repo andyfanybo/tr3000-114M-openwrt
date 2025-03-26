@@ -119,11 +119,6 @@ jobs:
         cd $OPENWRT_PATH
         echo -e "$GITHUB_WORKSPACE/$DIY_P2_SH"
         $GITHUB_WORKSPACE/$DIY_P2_SH
-        sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
-        sed -i 's/192.168.0.1/192.168.2.1/g' package/base-files/files/bin/config_generate
-        cat package/base-files/files/bin/config_generate |grep 192
-        echo -e "preset-terminal-tools.sh"
-        $GITHUB_WORKSPACE/scripts/preset-terminal-tools.sh
 
     #- name: SSH connection to Actions
      # uses: P3TERX/ssh2actions@v1.0.0
