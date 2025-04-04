@@ -6,15 +6,15 @@ on:
   #  - cron: 0 19 * * *
 
 env:
-  REPO_URL: https://github.com/padavanonly/immortalwrt-mt798x-24.10.git
-  REPO_BRANCH: 2410
+  REPO_URL: https://github.com/immortalwrt/immortalwrt.git
+  REPO_BRANCH: master
   CONFIG_FILE: OpenWrt-OPKG-TR3000.config
   DIY_P1_SH: OpenWrt-part1.sh
   DIY_P2_SH: OpenWrt-part2.sh
   CACHE_TOOLCHAIN: true
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
-  FIRMWARE_TAG: CUDY_TR3000_V1_114M_immortalwrt_HNAT_2410
+  FIRMWARE_TAG: CUDY_TR3000_V1_112M_immortalwrt_2410
   TZ: Asia/Shanghai
 
 jobs:
@@ -192,8 +192,8 @@ jobs:
           - ⚽ 固件源码: ${{ env.REPO_URL }}
           - 💝 源码分支: ${{ env.REPO_BRANCH }}
           - 🚀 内核版本: ${{ env.KERNEL }}
-          - 🌐 默认地址: 192.168.2.1
-          - 🔑 默认密码: password
+          - 🌐 默认地址: 192.168.1.1
+          - 🔑 默认密码: 无
           ### 🧊 固件版本
           - 固件编译前最后一次➦[主源码](${{ env.REPO_URL }})更新记录
           - ${{ env.COMMIT_AUTHOR }}
