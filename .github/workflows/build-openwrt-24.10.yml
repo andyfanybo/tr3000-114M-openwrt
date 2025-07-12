@@ -7,7 +7,7 @@ on:
 
 env:
   REPO_URL: https://github.com/dailook/immortalwrt-24.10.git
-  REPO_BRANCH: immortalwrt-24.10
+  REPO_BRANCH: openwrt-24.10
   CONFIG_FILE: OpenWrt-OPKG-TR3000.config
   DIY_P1_SH: OpenWrt-part1.sh
   DIY_P2_SH: OpenWrt-part2.sh
